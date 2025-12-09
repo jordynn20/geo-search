@@ -9,7 +9,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "geo-search=geo_search.search_geo:main",
+            "geo-search=geo-search.search_geo:main",
         ],
     },
     author="Jordyn Niemiec",
