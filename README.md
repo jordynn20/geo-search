@@ -1,16 +1,16 @@
-# GEO Search Tool  
+# GEO Dataset Search Tool  
 A command-line tool for searching NCBI GEO (Gene Expression Omnibus) datasets by keyword.
 
 ---
 
 ## Overview
 
-**GEO Search Tool** is a Python-based CLI program that lets you search the  
-**NCBI Gene Expression Omnibus (GEO)** for datasets using keywords.  
+**GEO Search Tool** is a Python-based program that lets you search the  
+**NCBI Gene Expression Omnibus (GEO)** for datasets using desired keywords.  
 It uses the NCBI **ESearch** and **ESummary** E-utilities to:
 
 - Search GEO dataset metadata
-- Retrieve detailed information (title, summary, dataset type)
+- Retrieve detailed & relevant information (title, summary, dataset type)
 - Correctly handle **multi-species** datasets
 - Display results in a clean, readable terminal format
 
@@ -30,16 +30,38 @@ It uses the NCBI **ESearch** and **ESummary** E-utilities to:
 ##  Installation
 
 ### **Local installation**
+
+Got it! Here’s the **full install & usage section**, all in one block, ready to copy into your `README.md`:
+
+---
+
+# 📦 Installation & Usage
+
+## 1️⃣ Clone the Repository
+
 ```bash
-pip install .
+git clone https://github.com/jordynn20/geo-search
+cd geo_search
+```
+
 
 ---
 
 ## Usage & Example
 ## Basic Search
 geo-search "breast cancer"
-## Limiting results number
-geo-search "diabetes" --max 20
+
+## Optional Parameters
+
+--db → Choose database (default: gds)
+Examples: --db sra, --db pubmed
+
+--max → Maximum number of results
+Default: 100
+
+--operator → Boolean operator for multiple keywords (AND or OR)
+Default: AND
+
 ## Output
 🔍 Searching GEO for: 'breast cancer' ...
 
@@ -52,12 +74,4 @@ geo-search "diabetes" --max 20
 📝 Summary:    Gene expression analysis of primary tumors...
 ──────────────────────────────────
 
-──────────────────────────────────
-📌 Accession:  GSE99821
-🏷  Title:      Cross-species tumor profiling
-📚 Type:       GSE
-🧬 Organism(s): Homo sapiens, Mus musculus
-🔬 Samples:    32
-📝 Summary:    Comparative profiling in human–mouse xenografts...
-──────────────────────────────────
 
