@@ -1,16 +1,16 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="geo-search-tool",
-    version="1.0.0",
+    name="my_package",
+    version="0.1.0",
     packages=find_packages(),
     install_requires=[
-        "requests"
+        "requests>=2.30.0,<3.0.0",
     ],
     entry_points={
         "console_scripts": [
-            "geo-search=geo_search.cli:main"
-        ]
+            "geo-search=my_package.search_geo:main",
+        ],
     },
     author="Jordyn Niemiec",
     description="A command-line tool for searching NCBI GEO datasets.",
