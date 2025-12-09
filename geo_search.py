@@ -4,13 +4,13 @@ import requests
 import sys
 from xml.etree import ElementTree
 
-EUTILS = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
+LINK = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
 
-def geo_esearch(keyword, retmax=100):
-    """Search GEO datasets using NCBI ESearch."""
-    url = f"{EUTILS}/esearch.fcgi"
+def geo_esearch(keyword, db="gds", retmax=100):
+    """Search datasets using NCBI ESearch."""
+    url = f"{LINK}/esearch.fcgi"
     params = {
-        "db": "gds",
+        "db": db,
         "term": keyword,
         "retmax": retmax,
         "retmode": "json"
@@ -27,14 +27,14 @@ def geo_esearch(keyword, retmax=100):
     return ids
 
 
-def geo_esummary(id_list):
-    """Fetch metadata for GEO datasets using NCBI ESummary."""
+def geo_esummary(id_list, db="gds"):
+    """Fetch metadata using NCBI ESummary."""
     if not id_list:
         return []
 
-    url = f"{EUTILS}/esummary.fcgi"
+    url = f"{LINK}/esummary.fcgi"
     params = {
-        "db": "gds",
+        "db": db,
         "id": ",".join(id_list),
     }
 
@@ -45,26 +45,24 @@ def geo_esummary(id_list):
         print(f"Error during ESummary: {e}")
         sys.exit(1)
 
-    # ESummary returns XML, so parse it
     root = ElementTree.fromstring(r.content)
-
     results = []
+
     for doc in root.findall(".//DocSum"):
         record = {}
         record["id"] = doc.find("./Id").text
 
-    for item in doc.findall("./Item"):
-        name = item.attrib.get("Name")
-        value = item.text
+        for item in doc.findall("./Item"):
+            name = item.attrib.get("Name")
+            value = item.text
 
-    # Handle multi-value fields (e.g., multiple taxa)
-        if name in record:
-        # Convert to list if not already
-            if not isinstance(record[name], list):
-                record[name] = [record[name]]
-            record[name].append(value)
-        else:
-            record[name] = value
+            # Handle multi-value fields
+            if name in record:
+                if not isinstance(record[name], list):
+                    record[name] = [record[name]]
+                record[name].append(value)
+            else:
+                record[name] = value
 
         results.append(record)
 
@@ -72,9 +70,9 @@ def geo_esummary(id_list):
 
 
 def print_results(records):
-    """Pretty-print GEO dataset summaries."""
+    """Pretty-print dataset summaries."""
     if not records:
-        print("No GEO records found.")
+        print("No records found.")
         return
 
     for rec in records:
@@ -82,8 +80,8 @@ def print_results(records):
         if isinstance(organism_field, list):
             organism_str = ", ".join(organism_field)
         else:
-            organism_str = organism_field or "—"   
-        #for multi-organism functionality 
+            organism_str = organism_field or "—"
+
         print("──────────────────────────────────")
         print(f"📌 Accession: {rec.get('Accession', '(unknown)')}")
         print(f"🏷  Title:     {rec.get('title', '—')}")
@@ -96,36 +94,42 @@ def print_results(records):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Search NCBI GEO (Gene Expression Omnibus) datasets by keyword."
+        description="Search NCBI databases (default: GEO GDS) by keyword."
     )
     parser.add_argument(
         "keywords",
         nargs="+",
-        help="One or more keywords to search for (will be combined with AND)"
+        help="One or more keywords to search for (combined using AND/OR)."
     )
     parser.add_argument(
         "--max",
         type=int,
         default=100,
-        help="Maximum number of results to return (default=100)"
+        help="Maximum number of results (default=100)"
     )
     parser.add_argument(
         "--operator",
         choices=["AND", "OR"],
         default="AND",
-        help="Boolean operator to combine multiple keywords (default: AND)"
+        help="Boolean operator to combine keywords (default: AND)"
     )
+    parser.add_argument(
+        "--db",
+        default="gds",
+        help="NCBI database to search (default: gds)"
+    )
+
     args = parser.parse_args()
 
-    # Combine multiple keywords into a single search term with AND
-    search_term = " AND ".join(args.keywords)
-    print(f"🔍 Searching GEO for: '{search_term}' ...\n")
+    # Combine keywords
+    search_term = f" {args.operator} ".join(args.keywords)
 
-    # Run the search and summary
-    ids = geo_esearch(search_term, args.max)
-    records = geo_esummary(ids)
+    print(f"Searching NCBI db '{args.db}' for: '{search_term}' ...\n")
+
+    # Run search and summary
+    ids = geo_esearch(search_term, db=args.db, retmax=args.max)
+    records = geo_esummary(ids, db=args.db)
     print_results(records)
-
 
 
 if __name__ == "__main__":
