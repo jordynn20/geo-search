@@ -54,12 +54,15 @@ geo-search "breast cancer"
 ## Optional Parameters
 
 --db → Choose database (default: gds)
+
 Examples: --db sra, --db pubmed
 
 --max → Maximum number of results
+
 Default: 100
 
 --operator → Boolean operator for multiple keywords (AND or OR)
+
 Default: AND
 
 ## Output
