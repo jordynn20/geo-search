@@ -68,13 +68,18 @@ Default: AND
 ## Output
 🔍 Searching GEO for: 'breast cancer' ...
 
-──────────────────────────────────
+
 📌 Accession:  GSE12345
+
 🏷  Title:      Expression profiling in breast cancer
+
 📚 Type:       GSE
+
 🧬 Organism(s): Homo sapiens
+
 🔬 Samples:    48
+
 📝 Summary:    Gene expression analysis of primary tumors...
-──────────────────────────────────
+
 
 
