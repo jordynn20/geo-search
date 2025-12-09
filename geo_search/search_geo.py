@@ -86,6 +86,7 @@ def print_results(records):
         print(f"📌 Accession: {rec.get('Accession', '(unknown)')}")
         print(f"🏷  Title:     {rec.get('title', '—')}")
         print(f"📚 Type:      {rec.get('gdstype', '—')}")
+        print(f"📐 Design:    {rec.get('overall_design', '—')}")
         print(f"🧬 Organism(s): {organism_str}")
         print(f"🔬 Samples:   {rec.get('n_samples', '—')}")
         print(f"📝 Summary:   {rec.get('summary', '—')}")
