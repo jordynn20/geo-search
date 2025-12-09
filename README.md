@@ -29,14 +29,6 @@ It uses the NCBI **ESearch** and **ESummary** E-utilities to:
 
 ##  Installation
 
-### **Local installation**
-
-Got it! Here’s the **full install & usage section**, all in one block, ready to copy into your `README.md`:
-
----
-
-# Installation & Usage
-
 ## Clone the Repository
 
 ```bash
