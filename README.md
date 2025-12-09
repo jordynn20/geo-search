@@ -35,9 +35,9 @@ Got it! Here’s the **full install & usage section**, all in one block, ready t
 
 ---
 
-# 📦 Installation & Usage
+# Installation & Usage
 
-## 1️⃣ Clone the Repository
+## Clone the Repository
 
 ```bash
 git clone https://github.com/jordynn20/geo-search
